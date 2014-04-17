@@ -7,7 +7,7 @@ var GremlinFunction = require('./gremlin/functions/function');
 
 module.exports = (function() {
   function Gremlin(client) {
-    this.script = '';
+    // this.script = '';
     this.params = {};
     this.client = client;
     this.lines = [];
@@ -17,6 +17,18 @@ module.exports = (function() {
         var graph = new Graph(this);
 
         return graph;
+      }
+    });
+
+    Object.defineProperty(this, 'script', {
+      get: function() {
+        var groovyString = _.map(this.lines, function(line) {
+          return line.toGroovy();
+        });
+
+        groovyString = groovyString.join('\n');
+
+        return groovyString;
       }
     });
   }
@@ -63,10 +75,6 @@ module.exports = (function() {
    */
   Gremlin.prototype.line = function(line, identifier) {
     this.lines.push(line);
-    var str = line.toGroovy();
-    var lineBreak = this.lines.length > 1 ? '\n' : '';
-
-    this.script += lineBreak + str;
   };
 
   return Gremlin;
