@@ -13,7 +13,19 @@ module.exports = (function() {
     this.parentGremlin = parentGremlin;
     this.gremlin = this.parentGremlin.subScript();
     this.identifier = 'g';
+    this.methods = [];
   }
+
+  Graph.prototype.toGroovy = function() {
+    var groovy = [this.identifier];
+
+    var methodsString = _.map(this.methods, function(method) {
+      return method.toGroovy();
+    });
+
+    groovy = groovy.concat(methodsString);
+    return groovy.join('');
+  };
 
   Graph.prototype.E = function() {
     var func = new GremlinMethod('E', arguments);
@@ -25,8 +37,9 @@ module.exports = (function() {
   Graph.prototype.V = function() {
     var func = new GremlinMethod('V', arguments);
     this.gremlin.append(this.identifier + func.toGroovy());
+    this.methods.push(func);
 
-    return new Pipeline(this.gremlin);
+    return new Pipeline(this.gremlin, this);
   };
 
   Graph.prototype.e = function() {

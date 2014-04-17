@@ -10,6 +10,7 @@ module.exports = (function() {
     this.script = '';
     this.params = {};
     this.client = client;
+    this.lines = [];
 
     Object.defineProperty(this, 'g', {
       get: function() {
@@ -60,8 +61,12 @@ module.exports = (function() {
    * @public
    * @param {String} line
    */
-  Gremlin.prototype.line = function(line) {
-    this.script += '\n'+ line;
+  Gremlin.prototype.line = function(line, identifier) {
+    this.lines.push(line);
+    var str = line.toGroovy();
+    var lineBreak = this.lines.length > 1 ? '\n' : '';
+
+    this.script += lineBreak + str;
   };
 
   return Gremlin;

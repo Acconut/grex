@@ -6,9 +6,16 @@ var PipesStep = require('./functions/steps/pipesstep');
 var SelectStep = require('./functions/steps/select');
 
 module.exports = (function () {
-  function Pipeline(gremlin) {
+  function Pipeline(gremlin, graph) {
     this.gremlin = gremlin;
+    this.methods = [];
+    this.graph = graph;
   }
+
+  Pipeline.prototype.toGroovy = function() {
+    var str = this.graph.toGroovy() + this.methods.join('.');
+    return str;
+  };
 
   /**
    * Execute a query against the server.
