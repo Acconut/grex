@@ -23,7 +23,7 @@ module.exports = (function() {
     Object.defineProperty(this, 'script', {
       get: function() {
         var groovyString = _.map(this.lines, function(line) {
-          return line.toGroovy();
+          return line.toGroovy ? line.toGroovy() : line; // Temporary fix
         });
 
         groovyString = groovyString.join('\n');
