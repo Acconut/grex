@@ -29,24 +29,23 @@ module.exports = (function() {
 
   Graph.prototype.E = function() {
     var func = new GremlinMethod('E', arguments);
-    this.gremlin.append(this.identifier + func.toGroovy());
+    this.methods.push(func);
 
-    return new Pipeline(this.gremlin);
+    return new Pipeline(this);
   };
 
   Graph.prototype.V = function() {
     var func = new GremlinMethod('V', arguments);
-    this.gremlin.append(this.identifier + func.toGroovy());
     this.methods.push(func);
 
-    return new Pipeline(this.gremlin, this);
+    return new Pipeline(this);
   };
 
   Graph.prototype.e = function() {
     var func = new GremlinMethod('e', arguments);
-    this.gremlin.append(this.identifier + func.toGroovy());
+    this.methods.push(func);
 
-    return new Pipeline(this.gremlin);
+    return new Pipeline(this);
   };
 
   Graph.prototype.idx = function() {
@@ -58,9 +57,9 @@ module.exports = (function() {
 
   Graph.prototype.v = function() {
     var func = new GremlinMethod('v', arguments);
-    this.gremlin.append(this.identifier + func.toGroovy());
+    this.methods.push(func);
 
-    return new Pipeline(this.gremlin);
+    return new Pipeline(this);
   };
 
   // Indexing
